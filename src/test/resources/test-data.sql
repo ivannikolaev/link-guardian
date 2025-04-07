@@ -1,0 +1,2 @@
+INSERT INTO short_links (original_url, short_code, expiration_time, max_clicks, current_clicks, active, created_at, updated_at)
+VALUES ('https://www.google.com', 'google', NOW() + INTERVAL '1' DAY, 5, 0, TRUE, NOW(), NOW());
