@@ -12,3 +12,8 @@ spring:
       properties:
         hibernate:
           format_sql: true
+
+app:
+  cleanup:
+    cron: "0 0 3 * * ?" # every day at 3am
+    retain-inactive-days: 30 # Store inactive links for 30 days
