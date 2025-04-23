@@ -1,5 +1,7 @@
 package com.github.ivannikolaev.link_guardian.controller;
 
+import com.github.ivannikolaev.link_guardian.exception.LinkExpiredException;
+import com.github.ivannikolaev.link_guardian.exception.LinkNotFoundException;
 import com.github.ivannikolaev.link_guardian.model.dto.request.CreateLinkRequest;
 import com.github.ivannikolaev.link_guardian.model.dto.response.LinkResponse;
 import com.github.ivannikolaev.link_guardian.model.dto.response.LinkStatsResponse;
@@ -8,6 +10,7 @@ import com.github.ivannikolaev.link_guardian.service.LinkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -46,5 +49,15 @@ public class LinkController {
     public ResponseEntity<LinkStatsResponse> getStats(@PathVariable String shortCode) {
         //todo
         return ResponseEntity.ok().build();
+    }
+
+    @ExceptionHandler(LinkNotFoundException.class)
+    public ErrorResponse handleLinkNotFound(LinkNotFoundException e) {
+        return ErrorResponse.builder(e, HttpStatus.NOT_FOUND, e.getMessage()).build();
+    }
+
+    @ExceptionHandler(LinkExpiredException.class)
+    public ErrorResponse handleLinkExpired(LinkExpiredException e) {
+        return ErrorResponse.builder(e, HttpStatus.GONE, e.getMessage()).build();
     }
 }
